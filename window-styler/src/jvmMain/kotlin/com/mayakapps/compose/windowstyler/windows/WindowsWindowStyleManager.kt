@@ -24,11 +24,13 @@ class WindowsWindowStyleManager internal constructor(
     private val window: ComposeWindow,
     preferredBackdrop: WindowBackdrop,
     frameStyle: WindowFrameStyle,
+    manageTitlebar: Boolean,
 ) : WindowStyleManager {
     private val hwnd: HWND = window.hwnd
-    private val backdropApis = WindowsBackdropApis.install(hwnd)
     private var isApplied = false
 
+    private val backdropApis = WindowsBackdropApis.install(hwnd)
+    private val customDecorationWindowProc = if (manageTitlebar) CustomDecorationWindowProc.install(hwnd) else null
     override var preferredBackdrop: WindowBackdrop by Delegates.observable(preferredBackdrop) { _, oldValue, _ ->
         if (!isApplied) return@observable
 
@@ -43,6 +45,19 @@ class WindowsWindowStyleManager internal constructor(
         }
     }
 
+    override var manageTitlebar: Boolean = manageTitlebar
+        get() = field
+        set(value) {
+            field = if (value) {
+                true
+            } else {
+                // TODO: reset the window proc to the default one
+                false
+            }
+        }
+
+    override fun apply() {
+        if (_backdrop == null) return
     private val backdrop: WindowBackdrop get() = preferredBackdrop.fallbackIfNotSupported()
 
     override suspend fun apply(): WindowBackdrop {
