@@ -16,12 +16,15 @@ internal interface WindowStyleManager {
      */
     val frameStyle: WindowFrameStyle
 
+    val manageTitlebar: Boolean
+
     suspend fun apply(): WindowBackdrop
 }
 
 internal class StubWindowStyleManager(
     override var preferredBackdrop: WindowBackdrop,
     override var frameStyle: WindowFrameStyle,
+    override val manageTitlebar: Boolean,
 ) : WindowStyleManager {
     override suspend fun apply(): WindowBackdrop = WindowBackdrop.None
 }
@@ -33,7 +36,8 @@ internal fun WindowStyleManager(
     window: ComposeWindow,
     preferredBackdrop: WindowBackdrop,
     frameStyle: WindowFrameStyle,
+    manageTitlebar: Boolean,
 ) = when (hostOs) {
-    OS.Windows -> WindowsWindowStyleManager(window, preferredBackdrop, frameStyle)
-    else -> StubWindowStyleManager(preferredBackdrop, frameStyle)
+    OS.Windows -> WindowsWindowStyleManager(window, preferredBackdrop, frameStyle, manageTitlebar)
+    else -> StubWindowStyleManager(preferredBackdrop, frameStyle, manageTitlebar)
 }

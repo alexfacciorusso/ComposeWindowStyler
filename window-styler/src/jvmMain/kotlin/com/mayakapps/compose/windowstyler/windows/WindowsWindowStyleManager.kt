@@ -30,7 +30,6 @@ class WindowsWindowStyleManager internal constructor(
     private var isApplied = false
 
     private val backdropApis = WindowsBackdropApis.install(hwnd)
-    private val customDecorationWindowProc = if (manageTitlebar) CustomDecorationWindowProc.install(hwnd) else null
     override var preferredBackdrop: WindowBackdrop by Delegates.observable(preferredBackdrop) { _, oldValue, _ ->
         if (!isApplied) return@observable
 
@@ -56,8 +55,6 @@ class WindowsWindowStyleManager internal constructor(
             }
         }
 
-    override fun apply() {
-        if (_backdrop == null) return
     private val backdrop: WindowBackdrop get() = preferredBackdrop.fallbackIfNotSupported()
 
     override suspend fun apply(): WindowBackdrop {
@@ -73,6 +70,13 @@ class WindowsWindowStyleManager internal constructor(
 
                 updateFrameStyle()
                 backdrop.applyDiff(null, hwnd, backdropApis)
+
+                // TODO
+                val customDecorationWindowProc = if (manageTitlebar) {
+                    CustomDecorationWindowProc.install(hwnd).also {
+                        backdropApis.createSheetOfGlassEffect()
+                    }
+                } else null
             }
         }
         isApplied = true

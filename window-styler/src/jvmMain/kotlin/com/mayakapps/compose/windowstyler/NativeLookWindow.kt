@@ -40,11 +40,12 @@ fun NativeLookWindow(
     focusable: Boolean = true,
     alwaysOnTop: Boolean = false,
     frameStyle: WindowFrameStyle = WindowFrameStyle(),
+    manageTitlebar: Boolean = false,
     onPreviewKeyEvent: (KeyEvent) -> Boolean = { false },
     onKeyEvent: (KeyEvent) -> Boolean = { false },
     content: @Composable (NativeLookWindowScope.() -> Unit),
 ) {
-    key(preferredBackdropType::class) {
+    key(preferredBackdropType::class, manageTitlebar) {
         Window(
             onCloseRequest = onCloseRequest,
             state = state,
@@ -65,6 +66,7 @@ fun NativeLookWindow(
                     window,
                     preferredBackdropType,
                     frameStyle,
+                    manageTitlebar,
                 )
             }
 

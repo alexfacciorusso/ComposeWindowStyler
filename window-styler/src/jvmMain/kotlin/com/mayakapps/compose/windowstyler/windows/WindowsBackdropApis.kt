@@ -39,7 +39,7 @@ internal class WindowsBackdropApis private constructor(private val hwnd: WinDef.
         }
     }
 
-    private fun createSheetOfGlassEffect() {
+    internal fun createSheetOfGlassEffect() {
         Dwm.extendFrameIntoClientArea(hwnd, -1)
     }
 
@@ -50,9 +50,5 @@ internal class WindowsBackdropApis private constructor(private val hwnd: WinDef.
         // Matching value with bitsdojo_window.
         // https://github.com/bitsdojo/bitsdojo_window/blob/adad0cd40be3d3e12df11d864f18a96a2d0fb4fb/bitsdojo_window_windows/windows/bitsdojo_window.cpp#L149
         Dwm.extendFrameIntoClientArea(hwnd, 0, 0, 1, 0)
-    }
-
-    companion object {
-        internal fun install(hwnd: WinDef.HWND): WindowsBackdropApis = WindowsBackdropApis(hwnd)
     }
 }

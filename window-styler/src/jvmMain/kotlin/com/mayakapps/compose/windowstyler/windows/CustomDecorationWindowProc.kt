@@ -22,6 +22,7 @@ class CustomDecorationWindowProc private constructor(private val hwnd: WinDef.HW
             }
 
             WM_NCHITTEST -> {
+                println("WM_NCHITTEST($uMsg, $wParam, $lParam)")
                 User32.callWindowProc(defWndProc, hWnd, uMsg, wParam, lParam)
             }
 

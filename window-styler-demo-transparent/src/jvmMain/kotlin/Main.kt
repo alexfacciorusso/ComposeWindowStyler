@@ -4,10 +4,9 @@ import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import com.mayakapps.compose.windowstyler.NativeLookWindow
 import com.mayakapps.compose.windowstyler.WindowBackdrop
-import com.mayakapps.compose.windowstyler.WindowStyle
 
 @Composable
 @Preview
@@ -18,16 +17,12 @@ fun App() {
 }
 
 fun main() = application {
-    Window(
+    NativeLookWindow(
         onCloseRequest = ::exitApplication,
         title = "Compose Window Styler Demo",
+        preferredBackdropType = WindowBackdrop.Mica(isSystemInDarkTheme()),
+        manageTitlebar = true
     ) {
-        WindowStyle(
-            isDarkTheme = isSystemInDarkTheme(),
-            backdropType = WindowBackdrop.Mica,
-            manageTitlebar = true
-        )
-
         MaterialTheme {
             App()
         }
