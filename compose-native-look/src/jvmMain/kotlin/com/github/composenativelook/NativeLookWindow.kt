@@ -60,7 +60,7 @@ fun NativeLookWindow(
             onPreviewKeyEvent = onPreviewKeyEvent,
             onKeyEvent = onKeyEvent,
         ) {
-            val manager = remember {
+            val manager = remember(window) {
                 WindowStyleManager(
                     window,
                     preferredBackdropType,
@@ -79,6 +79,11 @@ fun NativeLookWindow(
             LaunchedEffect(preferredBackdropType) {
                 // TODO: to explore if manager can be totally removed
                 appliedBackdrop = manager.apply()
+            }
+
+            LaunchedEffect(frameStyle) {
+                manager.frameStyle = frameStyle
+                manager.apply()
             }
 
             @Suppress("NAME_SHADOWING")

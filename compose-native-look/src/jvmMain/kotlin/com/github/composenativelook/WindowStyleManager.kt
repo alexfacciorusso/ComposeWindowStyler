@@ -14,7 +14,7 @@ internal interface WindowStyleManager {
     /**
      * The style of the window frame which includes the title bar and window border. See [WindowFrameStyle].
      */
-    val frameStyle: WindowFrameStyle
+    var frameStyle: WindowFrameStyle
 
     suspend fun apply(): WindowBackdrop
 }
